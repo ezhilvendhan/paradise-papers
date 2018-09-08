@@ -1,41 +1,18 @@
-# GRANDstack Starter
+- Install Neo4J
+- Set your Neo4j connection string and credentials in `.env`. For example:
+    *.env*
 
-This project is a starter for building a [GRANDstack](https://grandstack.io) (GraphQL, React, Apollo, Neo4j Database) application. There are two components to the starter, the UI application (a React app) and the API app (GraphQL server).
+    ```
+    NEO4J_URI=bolt://localhost:7687
+    NEO4J_USER=neo4j
+    NEO4J_PASSWORD=letmein
+    ```
 
-## Quickstart
-
-### Neo4j
-
-You need a Neo4j instance, e.g. a [Neo4j Sandbox](http://neo4j.com/sandbox), a local instance via [Neo4j Desktop](https://neo4j.com/download), [Docker](http://hub.docker.com/_/neo4j) or a [Neo4j instance on AWS, Azure or GCP](http://neo4j.com/developer/guide-cloud-deployment) or [Neo4j Cloud](http://neo4j.com/cloud)
-
-For schemas using the  `@cypher` directive via [`neo4j-graphql-js`](https://github.com/neo4j-graphql/neo4j-graphql-js), you need to have the [APOC library](https://github.com/neo4j-contrib/neo4j-apoc-procedures) installed, which is automatic in Sandbox, Cloud and a single click install in Neo4j Desktop. 
-
-### [`/api`](./api)
-
-*Install dependencies*
-
-```
-(cd ./ui && npm install)
-(cd ./api && npm install)
-```
-
-*Start API server*
-```
-cd ./api && npm start
-```
-
-![](api/img/graphql-playground.png)
-
-### [`/ui`](./ui)
-
-This will start the GraphQL API in the foreground, so in another terminal session start the UI development server:
-
-*Start UI server*
-```
-cd ./ui && npm start
-```
-
-![](ui/img/default-app.png)
-
-This project is licensed under the Apache License v2.
-Copyright (c) 2018 Neo4j, Inc.
+    Note that grand-stack-starter does not currently bundle a distribution of Neo4j. You can download [Neo4j Desktop](https://neo4j.com/download/) and run locally for development, spin up a [hosted Neo4j Sandbox instance](https://neo4j.com/download/), run Neo4j in one of the [many cloud options](https://neo4j.com/developer/guide-cloud-deployment/), or [spin up Neo4j in a Docker container](https://neo4j.com/developer/docker/). Just be sure to update the Neo4j connection string and credentials accordingly in `.env`.
+- Download the paradise papers dataset and import them using `scripts/seed.sh`
+- To Setup:
+  - `cd api && npm i`
+  - `cd ui && npm i`
+- To run:
+  - `cd api && npm start`
+  - `cd ui && npm start`
