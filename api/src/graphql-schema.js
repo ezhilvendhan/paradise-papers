@@ -1,53 +1,78 @@
 import { neo4jgraphql } from "neo4j-graphql-js";
 
 export const typeDefs = `
-type User {
-  id: ID!
-  name: String
-  friends(first: Int = 10, offset: Int = 0): [User] @relation(name: "FRIENDS", direction: "BOTH")
-  reviews(first: Int = 10, offset: Int = 0): [Review] @relation(name: "WROTE", direction: "OUT")
-  avgStars: Float @cypher(statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN toFloat(avg(r.stars))")
-  numReviews: Int @cypher(statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN COUNT(r)")
-}
-
-type Business {
-  id: ID!
+type address {
+  node_id: ID!
   name: String
   address: String
-  city: String
-  state: String
-  reviews(first: Int = 10, offset: Int = 0): [Review] @relation(name: "REVIEWS", direction: "IN")
-  categories(first: Int = 10, offset: Int =0): [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
+  country_codes: [String]
+  countries: [String]
+  sourceID: String
+  valid_until: String
+  note: String
 }
 
-type Review {
-  id: ID!
-  stars: Int
-  text: String
-  business: Business @relation(name: "REVIEWS", direction: "OUT")
-  user: User @relation(name: "WROTE", direction: "IN")
+type entity {
+  node_id: ID!
+  name: String
+  jurisdiction: String
+  jurisdiction_description: String
+  country_codes: [String]
+  countries: [String]
+  incorporation_date: String
+  inactivation_date: String
+  struck_off_date: String
+  closed_date: String
+  ibcRUC: String
+  status: String
+  company_type: String
+  service_provider: String
+  sourceID: String
+  valid_until: String
+  note: String
 }
 
-type Category {
-  name: ID!
-  businesses(first: Int = 10, offset: Int = 0): [Business] @relation(name: "IN_CATEGORY", direction: "IN")
+type intermediary {
+  node_id: ID!
+  name: String
+  country_codes: [String]
+  countries: [String]
+  sourceID: String
+  valid_until: String
+  note: String
 }
+
+type officer {
+  node_id: ID!
+  name: String
+  country_codes: [String]
+  countries: [String]
+  status: String
+  sourceID: String
+  valid_until: String
+  note: String
+}
+
+type other {
+  node_id: ID!
+  name: String
+  country_codes: [String]
+  countries: [String]
+  sourceID: String
+  valid_until: String
+  note: String
+}
+
+union SearchResult = officer | entity
 
 type Query {
-    users(id: ID, name: String, first: Int = 10, offset: Int = 0): [User]
-    businesses(id: ID, name: String, first: Int = 10, offset: Int = 0): [Business]
-    reviews(id: ID, stars: Int, first: Int = 10, offset: Int = 0): [Review]
-    category(name: ID!): Category
-    usersBySubstring(substring: String, first: Int = 10, offset: Int = 0): [User] @cypher(statement: "MATCH (u:User) WHERE u.name CONTAINS $substring RETURN u")
+  path(person1: String!, person2: String!): [SearchResult]
+     @cypher(statement: "MATCH p=shortestPath((p1:Officer)-[*]-(p2:Officer)) WHERE p1.name = $person1 AND p2.name = $person2 RETURN p")
 }
 `;
 
 export const resolvers = {
   Query: {
-    users: neo4jgraphql,
-    businesses: neo4jgraphql,
-    reviews: neo4jgraphql,
-    category: neo4jgraphql,
-    usersBySubstring: neo4jgraphql
+    path: neo4jgraphql
   }
 };
