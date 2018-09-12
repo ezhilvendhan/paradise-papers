@@ -26,7 +26,8 @@ class EntityVis extends React.Component {
       <Query
         query={gql`
           {
-            path(person1: "Tillerson - Rex", person2: "The Duchy of Lancaster") {
+            Officer(first: 10, offset: 0, orderBy: name_asc) {
+              node_id
               name
             }
           }
@@ -37,11 +38,11 @@ class EntityVis extends React.Component {
           if (error) return <p>Error</p>;
 
           return (
-            data.shortestPath
+            data.Officer
               .slice()
               .map(n => {
                 return (
-                  n.name
+                  <div>{n.name}</div>
                 );
               })
           );

@@ -1,7 +1,7 @@
 import { neo4jgraphql } from "neo4j-graphql-js";
 
 export const typeDefs = `
-type address {
+type Address {
   node_id: ID!
   name: String
   address: String
@@ -42,7 +42,7 @@ type intermediary {
   note: String
 }
 
-type officer {
+type Officer {
   node_id: ID!
   name: String
   country_codes: [String]
@@ -53,7 +53,7 @@ type officer {
   note: String
 }
 
-type other {
+type Other {
   node_id: ID!
   name: String
   country_codes: [String]
@@ -63,7 +63,7 @@ type other {
   note: String
 }
 
-union SearchResult = officer | entity
+union SearchResult = Officer | entity
 
 type Query {
   path(person1: String!, person2: String!): [SearchResult]
